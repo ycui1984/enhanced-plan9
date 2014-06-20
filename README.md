@@ -31,19 +31,19 @@ To run our amd64 kernel
 
 13. cd /sys/src/9k/k10/ && mk install  it makes 9k10cpu and 9k10cpu.elf for use
 9k10cpu is plan9 bootable, while 9k10cpu.elf is used for QEMU
-This kernel is with MCS and monitor and mwait
-
-There is a bug when running on QEMU, not sure it is caused by QEMU or not. 
-When using more than 1 cpu, registers dump
 
 14. PART4 forces the code return to normal MCS, when runing the kernel, it is OK for up to 4 cpus in
-QEMU and KVM, but some problems happened when using 8 cores. 
+QEMU and KVM, but some problems happened when using 8 cores.
 
-Note, there is a bug for QEMU which prevents the instance takes root from remote file server 
-and auth server, please use the mainstream code,  git clone git://git.qemu-project.org/qemu.git
+This kernel in step 13 is with MCS and monitor and mwait
+There is a bug when running on QEMU, not sure it is caused by QEMU or not. 
+When using more than 1 cpu, registers dump and kernel crash
+
+Note, there is a bug on Ubuntu 13.04 for QEMU which prevents the instance takes root 
+from remote file server and auth server.
+Using the mainstream code solves this problem, git clone git://git.qemu-project.org/qemu.git
 
 some useful docs for setting up auth+fs+cpu server,
 http://wildflower.diablonet.net/~scaron/p9setup.html
 http://mirror.9grid.fr/mirror.9grid.fr/plan9-cpu-auth-server-howto.html
 and plan9 wiki, of course!
-
