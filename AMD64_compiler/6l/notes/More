@@ -1,0 +1,49 @@
+PMULHRW	0f 0f/r b7
+PMULHUW	0f e4/r
+PMULHW	0f e5/r
+PMULLW	0f d5/r
+PMULUDQ	0f f4/r	PMULULQ
+PSHUFW	0f 70/r ib	-	mmx1,mmx2/mem64,imm8
+PSWAPD	0f 0f/r bb	PSWAPL	mmx1,mmx2/mem64
+PUNPCKHBW	0f 68/r
+PUNPCKHDQ	0f 6a/r	PUNPCKHLQ
+PUNPCKHWD	0f 69/r	PUNPCKHWL
+PUNPCKLBW	0f 60/r
+PUNPCKLDQ	0f 62/r	PUNPCKLLQ
+PUNPCKLWD	0f 61/r	PUNPCKLWL
+PXOR	0f ef/r
+CVTPD2PI	66 0f 2d/r	CVTPD2PL	mmx,xmm2/mem128
+CVTPI2PD	66 0f 2a/r	CVTPL2PD	xmm,mmx/mem64
+CVTPI2PS	0f 2a/r	CVTPL2PS	xmm,mmx/mem64
+CVTPS2PI	0f 2d/r	CVTPS2PL	mmx,xmm/mem64
+CVTTPD2PI	66 0f 2c/r	CVTTPD2PL	mmx,xmm/mem128
+CVTTPS2PI	0f 2c/r	CVTTPS2PL	mmx,xmm/mem64
+MASKMOVQ	0f f7/r	-	mmx1,mmx2
+MOVD	0f 6e/r	mmx,reg/mem32[mem64-rex?]
+MOVD	0f 7e/r	reg/mem32[64],mmx	STORE
+MOVDQ2Q	f2 0f d6/r	mmx,xmm <-	MOVQ?
+MOVNTQ	0f e7/r	mem64,mmx
+MOVQ	0f 6f/r	mmx1,mmx2/mem64
+MOVQ	0f 7f/r	mmx1/mem64,mmx2
+MOVQ2DQ	f3 0f d6/r	xmm,mmx	MOVQOZX?
+PF2ID	0f 0f/r 1d	mmx1,mm2/mme64	PF2IL
+PF2IW	0f 0f/r 1c
+PFACC	0f 0f/r ae
+PFADD	0f 0f/r 9e
+PFCMPEQ	0f 0f/r b0
+PFCMPGE	0f 0f/r 90
+PFCMPGT	0f 0f/r a0
+PFMAX	0f 0f/r a4
+PFMIN	0f 0f/r 94
+PFMUL	0f 0f/r b4
+PFNACC	0f 0f/r 8a
+PFPNACC	0f 0f/r 8e
+PFRCP	0f 0f/r 96
+PFRCPIT1	0f 0f/r a6
+PFRCPI2T	0f 0f/r b6
+PFRSQIT1	0f 0f/r a7
+PFRSQRT	0f 0f/r 97
+PFSUB	0f 0f/r 9a
+PFSUBR	0f 0f/r aa
+PI2D	0f 0f/r 0d	PI2L
+PI2FW	0f 0f/r 0c

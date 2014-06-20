@@ -1,0 +1,83 @@
+x	rex insertion scheme is probably fragile (mod reg vs mod r/m depends on instruction)
+-	REP; RET (!) to avoid bad branch prediction in amd64
+x	MOVSLQ...
+-	CMOV..
+	x	6.out.h and 6a
+	x	6l
+	-	6c?
+x	MOV to CR8 requires REX prefix
+x	check INCL/DECL
+~	libmach disassembly
+
+-	CBW/CWDE/CDQE as special case of MOVBWSX AL,AX etc? (0x98)
+-	three-operand IMUL
+x	vector ops in 6.out.h and 6a/6l
+x	REGARG (use BP not DI)
+-	mul/div?
+	- mul should be ok but needs testing
+	- div by mul needs extension
+no	vlong as 128 bits?
+x	extern register
+x	more registers
+x	XMM ops for FP
+-	128 bit ops?
+-	libc
+	x	initial amd64
+	-	memmove etc (must check memory alignment, unroll loops?, use old Orbit code?)
+x	TLONG use (eg, bitfield); use tfield, set to types[TINT]
+	x	undone because switched back to 32-bit long
+-	dyn
+-	m16 | m32
+-	seg: prefix (or suffix)
+x	CQO
+-	memops
+~	structure assign
+	-	improve it (load/store)
+x	m64 vs m32
+x	REX
+x	FEMMS (no, it's obsolete)
+x	VLONG->QUAD
+x	peep
+~	MODE 16/32/64 - default operand size, different amode for 16-bit
+
+x	reg num
+	0 ax 1 cx 2 dx 3 bx 4 sp 5 bp 6 si 7 di
+
+-	immediate operand values for xmm compare
+	0	EQ
+	1	LT (or GT with operands exchanged)
+	2	LE (or GE with operands exchanged)
+	3	unordered
+	4	NE
+	5	not less than (or not greater than with operands exchanged)
+	6	not less than or equal (or not greater than or equal)
+	7	ordered
+-	when exchanging operands, note that 1st operand is overwritten(!)
+
+abi
+x	preserved:
+	rbx, rsp, rbp, r12-r15
+
+fixes
+-	8c (AFMOVW)
+-	8l/span.c (Ycl)
+-	/sys/src/libc/port/malloc.c	(ulong)
+x	JPC was incorrect in 8l
+x	/sys/src/libc/port/profile.c	explicit ref to _subv/_addv, had _ul2v anyhow
+-	cast in _ptov (ptov should go)
+
+to do
+-	long/ulong constants (OCONST) are truncated, because only 32-bit constants are available in 6a (unless not decimal)
+x	MOVL r,s; MOVLQSX s,s -> MOVLQSX r,s
+x	see e2.c, e3.c
+x	fp1.c
+-	DI hack in sugen
+x	long as 32 vlong as 64
+x	fix to float in both versions
+x	ptrbits? addrbits? uptrint?
+x	check BSF etc
+x	update cc (macbody and -.)
+x	build 6pack dist
+x	MOVD botch (variously MOVL, MOVQ)
+-	../cc/lexbody (ulong)hunk
+-	ape setjmp (sigsetjmp)

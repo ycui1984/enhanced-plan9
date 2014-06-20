@@ -1,0 +1,5 @@
+#!/bin/rc
+cd /sys/src/libmach
+mk
+cd /sys/src/cmd/db
+mk install

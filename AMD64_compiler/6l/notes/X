@@ -1,0 +1,294 @@
+ == cgen lhs ==
+Z
+
+ == cgen ==
+AS INT (1)
+   NAME "i" -4 <11> INT
+   IND INT (1)
+      ADD IND INT (1)
+         NAME "bp" 0 <11> IND INT
+         CONST "4" <20> IND INT
+      Z
+
+ == cgen lhs ==
+REGISTER R16 <11> INT
+
+ == cgen ==
+IND INT (1)
+   ADD IND INT (1)
+      NAME "bp" 0 <11> IND INT
+      CONST "4" <20> IND INT
+   Z
+
+ == cgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == cgen ==
+ADD IND INT (1)
+   NAME "bp" 0 <11> IND INT
+   CONST "0" <20> IND INT
+
+ == cgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == cgen ==
+NAME "bp" 0 <11> IND INT
+
+	MOVQ	bp+0(FP),AX
+	MOVQ	AX,AX
+	MOVL	4(AX),AX
+	MOVL	AX,i+-4(SP)
+ == boolgen lhs ==
+Z
+
+ == boolgen ==
+NAME "i" -4 <11> INT
+
+	CMPL	i+-4(SP),$0
+	JEQ	,
+ == cgen lhs ==
+Z
+
+ == cgen ==
+AS UCHAR (2)
+   IND UCHAR (2)
+      ADD IND UCHAR (2)
+         CAST IND UCHAR (1)
+            POSTINC INT (1)
+               NAME "i" -4 <11> INT
+               Z
+            Z
+         IND IND UCHAR (1)
+            ADD IND IND UCHAR (1)
+               NAME "bp" 0 <11> IND IND UCHAR
+               CONST "56" <20> IND IND UCHAR
+            Z
+      Z
+   CAST UCHAR (1)
+      NAME "c" 8 <11> INT
+      Z
+
+ == lcgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == lcgen ==
+IND UCHAR (2)
+   ADD IND UCHAR (2)
+      CAST IND UCHAR (1)
+         POSTINC INT (1)
+            NAME "i" -4 <11> INT
+            Z
+         Z
+      IND IND UCHAR (1)
+         ADD IND IND UCHAR (1)
+            NAME "bp" 0 <11> IND IND UCHAR
+            CONST "56" <20> IND IND UCHAR
+         Z
+   Z
+
+ == cgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == cgen ==
+ADD IND UCHAR (2)
+   CAST IND UCHAR (1)
+      POSTINC INT (1)
+         NAME "i" -4 <11> INT
+         Z
+      Z
+   IND IND UCHAR (1)
+      ADD IND IND UCHAR (1)
+         NAME "bp" 0 <11> IND IND UCHAR
+         CONST "56" <20> IND IND UCHAR
+      Z
+
+ == cgen lhs ==
+REGISTER R16 <11> IND UCHAR
+
+ == cgen ==
+CAST IND UCHAR (1)
+   POSTINC INT (1)
+      NAME "i" -4 <11> INT
+      Z
+   Z
+
+ == cgen lhs ==
+REGISTER R16 <11> INT
+
+ == cgen ==
+POSTINC INT (1)
+   NAME "i" -4 <11> INT
+   Z
+
+	MOVL	i+-4(SP),AX
+	ADDL	$1,i+-4(SP)
+	MOVQ	AX,AX
+ == cgen lhs ==
+REGISTER R17 <11> IND UCHAR
+
+ == cgen ==
+IND IND UCHAR (1)
+   ADD IND IND UCHAR (1)
+      NAME "bp" 0 <11> IND IND UCHAR
+      CONST "56" <20> IND IND UCHAR
+   Z
+
+ == cgen lhs ==
+REGISTER R17 <11> IND VOID
+
+ == cgen ==
+ADD IND IND UCHAR (1)
+   NAME "bp" 0 <11> IND IND UCHAR
+   CONST "0" <20> IND IND UCHAR
+
+ == cgen lhs ==
+REGISTER R17 <11> IND VOID
+
+ == cgen ==
+NAME "bp" 0 <11> IND IND UCHAR
+
+	MOVQ	bp+0(FP),CX
+	MOVQ	CX,CX
+	MOVQ	56(CX),CX
+	MOVQ	CX,CX
+	ADDQ	CX,AX
+	MOVQ	AX,AX
+ == cgen lhs ==
+REGISTER R17 <11> INT
+
+ == cgen ==
+CAST UCHAR (1)
+   NAME "c" 8 <11> INT
+   Z
+
+ == cgen lhs ==
+REGISTER R17 <11> INT
+
+ == cgen ==
+NAME "c" 8 <11> INT
+
+	MOVL	c+8(FP),CX
+	MOVB	CX,(AX)
+ == cgen lhs ==
+Z
+
+ == cgen ==
+AS INT (1)
+   IND INT (1)
+      ADD IND INT (1)
+         NAME "bp" 0 <11> IND INT
+         CONST "4" <20> IND INT
+      Z
+   NAME "i" -4 <11> INT
+
+ == lcgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == lcgen ==
+IND INT (1)
+   ADD IND INT (1)
+      NAME "bp" 0 <11> IND INT
+      CONST "0" <20> IND INT
+   Z
+
+ == cgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == cgen ==
+ADD IND INT (1)
+   NAME "bp" 0 <11> IND INT
+   CONST "0" <20> IND INT
+
+ == cgen lhs ==
+REGISTER R16 <11> IND VOID
+
+ == cgen ==
+NAME "bp" 0 <11> IND INT
+
+	MOVQ	bp+0(FP),AX
+	MOVQ	AX,AX
+	MOVL	i+-4(SP),CX
+	MOVL	CX,4(AX)
+ == cgen lhs ==
+REGISTER R16 <11> INT
+
+ == cgen ==
+CONST "0" <20> INT
+
+	MOVL	$0,AX
+	NOP	,
+ == boolgen lhs ==
+Z
+
+ == boolgen ==
+EQ INT (100)
+   CONST "-1" <20> INT
+   FUNC INT (100)
+      NAME "Bflush" 0 <10> FUNC(IND STRUCT Biobufhdr) INT
+      NAME "bp" 0 <11> IND STRUCT Biobufhdr
+
+ == cgen lhs ==
+REGISTER R16 <11> INT
+
+ == cgen ==
+FUNC INT (100)
+   NAME "Bflush" 0 <10> FUNC(IND STRUCT Biobufhdr) INT
+   NAME "bp" 0 <11> IND STRUCT Biobufhdr
+
+ == cgen lhs ==
+REGISTER R17 <11> IND STRUCT Biobufhdr
+
+ == cgen ==
+NAME "bp" 0 <11> IND STRUCT Biobufhdr
+
+	MOVQ	bp+0(FP),CX
+	MOVQ	CX,CX
+	MOVQ	CX,CX
+	MOVQ	CX,(SP)
+	CALL	,Bflush+0(SB)
+	CMPL	AX,$-1
+	JNE	,
+ == cgen lhs ==
+REGISTER R16 <11> INT
+
+ == cgen ==
+CONST "-1" <20> INT
+
+	MOVL	$-1,AX
+	NOP	,
+	NOP	,
+	NOP	,
+	TEXT	Bputc+0(SB),0,$32
+	MOVQ	bp+0(FP),BX
+	JMP	,3(PC)
+	JMP	,2(PC)
+	JMP	,26(PC)
+	MOVQ	BX,AX
+	MOVL	4(AX),AX
+	MOVL	AX,DX
+	CMPL	DX,$0
+	JEQ	,13(PC)
+	MOVL	DX,AX
+	INCL	,DX
+	MOVQ	BX,CX
+	MOVQ	56(CX),CX
+	ADDQ	CX,AX
+	MOVL	c+8(FP),CX
+	MOVB	CX,(AX)
+	MOVQ	BX,AX
+	MOVL	DX,CX
+	MOVL	CX,4(AX)
+	MOVL	$0,AX
+	RET	,
+	MOVQ	BX,CX
+	MOVQ	CX,(SP)
+	CALL	,Bflush+0(SB)
+	MOVQ	bp+0(FP),BX
+	CMPL	AX,$-1
+	JNE	,2(PC)
+	JMP	,-24(PC)
+	JMP	,-26(PC)
+	MOVL	$-1,AX
+	RET	,
+	RET	,
+	END	,

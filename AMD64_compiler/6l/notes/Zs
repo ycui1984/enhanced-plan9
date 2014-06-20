@@ -1,0 +1,32 @@
+	case Zpseudo:	
+	case Zlit:
+	case Zm_r:	from, reg[p->to.type]
+	case Zm_r_xm:	from,	reg[p->to.type]
+	case Zaut_r:	from, reg[p->to.type]
+	case Zm_o:	from, O
+	case Zr_m:	to, reg[p->from.type]
+	case Zr_m_xm:	to, reg[p->from.type]
+	case Zo_m:	to, O
+	case Zo_m64:	to, O
+	case Zm_ibo:	from, O; i8
+	case Zibo_m:	to, O; i8
+	case Zibo_m_xm:	to, O; i8
+	case Z_ib:	i8
+	case Zib_:	i8
+	case Zib_rp:	op+reg[p->to.type], i8
+	case Zil_rp:	op+reg[p->to.type], i16/32
+	case Ziq_rp:	op+reg[p->to.type] complex
+	case Zib_rr:	to, reg[p->to.type]
+	case Z_il:	i16/32
+	case Zil_:	i16/32
+	case Zm_ilo:	from, O; i16/32
+	case Zilo_m:	to, O; i16/32
+	case Zil_rr:	to, reg[p->to.type]; i16/32
+	case Z_rp:	op+reg[p->to.type]
+	case Zrp_:	op+reg[p->from.type]
+	case Zclr:	to, reg[p->to.type]	[xor self]
+	case Zbr:
+	case Zcall:
+	case Zjmp:
+	case Zloop:
+	case Zbyte:

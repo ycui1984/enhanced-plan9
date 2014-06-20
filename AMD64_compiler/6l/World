@@ -1,0 +1,20 @@
+#!/bin/rc
+rfork ne
+SRC=`{pwd}
+cd ..
+@{cd 6c; rc mkenam}
+for(a in 6a 6c 6l)@{cd $a; mk nuke; mk install}
+cd ../libmach
+rm -f  6obj.8
+mk -i install
+cd ../cmd
+rm -f ar.8 nm.8 file.8 size.8
+mk -i ar.install nm.install file.install size.install
+bind -c $SRC/../../libc /sys/src/libc
+objtype=amd64
+cd /sys/src
+for(lib in lib?*)@{
+	cd $lib || exit
+	mk nuke
+	mk -i install
+}

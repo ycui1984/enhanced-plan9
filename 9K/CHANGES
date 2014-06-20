@@ -1,0 +1,29 @@
+Quick changes
+
+- mach[machno]->ptr == m
+- sys->ticks
+- qmalloc to port
+- get rid of conf
+- perf counters
+- cleanup spurious interrupt handling
+- get rid of BY2...
+- /dev/config, if not there
+- regression testing
+- add ahci
+- add monitor, waitwhile
+
+
+Slow changes
+
+- revisit *apic, *ipi, and init code
+- int types (look at GiB ull, eg)
+- kprof
+- sched and lock instrumentation for benchs
+
+Researchy changes
+
+- new sched
+- new mm
+- add XCs
+- sems & tubes
+- zero copy

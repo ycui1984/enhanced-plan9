@@ -1,0 +1,58 @@
+	vespa:
+vendor_id	: AuthenticAMD
+cpu family	: 5
+model		: 8
+model name	: AMD-K6(tm) 3D processor
+stepping	: 12
+cpu MHz		: 501.143
+cache size	: 64 KB
+fdiv_bug	: no
+hlt_bug		: no
+sep_bug		: no
+f00f_bug	: no
+coma_bug	: no
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 1
+wp		: yes
+flags		: fpu vme de pse tsc msr mce cx8 sep mtrr pge mmx 3dnow
+bogomips	: 999.42
+	pranzo:
+processor	: 0
+vendor_id	: AuthenticAMD
+cpu family	: 6
+model		: 8
+model name	: AMD Athlon(tm) XP 1800+
+stepping	: 1
+cpu MHz		: 1536.856
+cache size	: 256 KB
+fdiv_bug	: no
+hlt_bug		: no
+f00f_bug	: no
+coma_bug	: no
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 1
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 mmx fxsr sse syscall mmxext 3dnowext 3dnow
+bogomips	: 3067.08
+	frangipani:
+processor	: 0
+vendor_id	: AuthenticAMD
+cpu family	: 15
+model		: 12
+model name	: AMD Athlon(tm) 64 Processor 3200+
+stepping	: 0
+cpu MHz		: 1005.066
+cache size	: 512 KB
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 1
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext lm 3dnowext 3dnow
+bogomips	: 1980.97
+TLB size	: 1088 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 40 bits physical, 48 bits virtual
+power management: ts fid vid ttp

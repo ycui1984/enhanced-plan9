@@ -1,0 +1,191 @@
+ADDPD	66 0f 58 /r	x1,x2/m128
+ADDPS	0f 58 /r	x1,x2/m128
+ADDSD	f2 0f 58 /r	x1,x2/m64
+ADDSS	f3 0f 58 /r	x1,x2/m32
+ANDNPD	66 0f 55 /r	x1,x2/m128
+ANDNPS	0f 55 /r	x1,x2/m128
+ANDPD	66 0f 54 /r	x1,x2/m128
+ANDPS	0f 54 /r	x1,x2/m128
+CMPPD	66 0f c2 /r ib	x1,x2/m128,imm8
+CMPPS	0f c2 /r ib	x1,x2/m128,imm8
+CMPSD	f2 0f c2 /r ib	x1,x2/m64,imm8
+CMPSS	f3 0f c2 /r ib	x1,x2/m32,imm8
+COMISD	66 0f 2f /r	x1,x2/m64
+COMISS	0f 2f /r	x1,x2/m32
+CVTDQ2PD	f3 0f e6 /r	x1,x2/m64
+CVTDQ2PS	0f 5b /r	x1,x2/m128
+CVTPD2DQ	f2 0f e6 /r	x1,x2/m128
+CVTPD2PI	66 0f 2d /r	mmx,x2/m128
+CVTPD2PS	66 0f 5a /r	x1,x2/m128
+CVTPI2PD	66 0f 2a /r	xmm,mmx/mem64
+CVTPI2PS	0f 2a /r	xmm,mmx/mem64
+CVTPS2DQ	66 0f 5b /r	x1,x2/m128
+CVTPS2PD	0f 5a /r	x1,x2/m64
+CVTPS2PI	0f 2d /r	mmx,xmm/m64
+CVTSD2SI	f2 0f 2d /r	reg32,xmm/mem64	+rex:reg64,xmm/mem64
+CVTSD2SS	f2 0f 5a /r	x1,x2/m64
+CVTSI2SD	f2 0f 2a /r	xmm,reg/m32	+rex:xmm,reg/m64
+CVTSI2SS	f3 0f 2a /r	xmm,reg/m32	+rex:xmm,reg/m64
+CVTSS2SD	f3 0f 5a /r	x1,x2/m32
+CVTSS2SI	f3 0f 2d /r	r32,x2/m32	+rex:r64,x2/m32
+CVTTPD2DQ	66 0f e6 /r	x1,x2/m128
+CVTTPD2PI	66 0f 2c /r	mmx,xmm/mem128
+CVTTPS2DQ	f3 0f 5b /r	x1,x2/m128
+CVTTPS2PI	0f 2c /r	mmx,xmm/mem64
+CVTTSD2SI	f2 0f 2c /r	reg32,xmm/mem64	+rex:reg64,xmm/mem64
+CVTTSS2SI	f3 0f 2c /r	reg32,xmm/mem32	+rex:reg64,xmm/mem32
+DIVPD	66 0f 5e /r	x1,x2/m128
+DIVPS	0f 5e /r	x1,x2/m128
+DIVSD	f2 0f 5e /r	x1,x2/m64
+DIVSS	f3 0f 5e /r	x1,x2/m32
+FXRSTOR	0f ae /1	m512	+rex for 64-bit
+FXSAVE	0f ae /0	m512	+rex for 64-bit
+LDMXCSR	0f ae /2	mem32
+MASKMOVDQU	66 0f f7 /r	x1,x2
+MAXPD	66 0f 5f /r	x1,x2/m128
+MAXPS	0f 5f /r	x1,x2/m128
+MAXSD	f2 0f 5f /r	x1,x2/m64
+MAXSS	f3 0f 5f /r	x1,x2/m32
+MINPD	66 0f 5d /r	x1,x2/m128
+MINPS	0f 5d /r	x1,x2/m128
+MINSD	f2 0f 5d /r	x1,x2/m64
+MINSS	f3 0f 5d /r	x1,x2/m32
+MOVAPD	66 0f 28 /r	xmm1,xmm2/mem128
+MOVAPD	66 0f 29 /r	xmm1/mem128,xmm2
+MOVAPS	0f 28 /r	xmm1,xmm2/mme128
+MOVAPS	0f 29 /r	xmm1/mem128,xmm2
+MOVD	66 0f 6e /r	xmm,reg/mem32	+rex
+MOVD	66 0f 7e /r	reg/mem32/xmm	+rex
+MOVDQ2Q	f2 0f d6 /r	mmx,xmm
+MOVDQA	66 0f 6f /r	xmm1,xmm2/mem128
+MOVDQA	66 0f 7f /r	xmm1/mem128,xmm2
+MOVDQU	f3 0f 6f /r	xmm1,xmm2/mem128
+MOVDQU	f3 0f 7f /r	xmm1/mem128,xmm2
+MOVHLPS	0f 12 /r	xmm1,xmm2
+MOVHPD	66 0f 16/r	xmm,mem64
+MOVHPD	66 0f 17/r	mem64,xmm
+MOVHPS	0f 16/r	xmm,mem64
+MOVHPS	0f 17/r	mem64,xmm
+MOVLHPS	0f 16/r	xmm1,xmm2
+MOVLPD	66 0f 12/r	xmm,mem64
+MOVLPD	66 0f 13/r	mem64,xmm
+MOVLPS	0f 12/r	xmm,mem64
+MOVLPS	0f 13/r	mem64,xmm
+MOVMSKPD	66 0f 50/r	reg32,xmm
+MOVMSKPS	0f 50/r	reg32,xmm
+MOVNTDQ	66 0f e7/r	mem128,xmm
+MOVNTPD	66 0f 2b/r	mem128,xmm
+MOVNTPS	0f 2b/r	mem128,xmm
+MOVQ	f3 0f 7e /r	xmm1,xmm2/mem64
+MOVQ	66 0f d6/r	xmm2,xmm1/mem64
+MOVQ2DQ	f3 0f d6/r	xmm,mmx
+MOVSD	f2 0f 10/r	xmm1,xmm2/mem64
+MOVSD	f2 0f 11/r	xmm1/mem64,xmm2
+MOVSS	f3 0f 10/r	xmm1,xmm2/mem32
+MOVSS	f3 0f 11/r	xmm1/mem32,xmm2
+MOVUPD	66 0f 10/r	xmm1,xmm2/mem128
+MOVUPD	66 0f 11/r	xmm1/mem128,xmm2
+MOVUPS	0f 10/r	xmm1,xmm2/mem128
+MOVUPS	0f 11/r	xmm1/mem128,xmm2
+MULPD	66 0f 59/r	xmm1,xmm2/mem128
+MULPS	0f 59/r	xmm1,xmm2/mem128
+MULSD	f2 0f 59/r	xmm1,xmm2/mem64
+MULSS	f3 0f 59/r	xmm1,xmm2/mem32
+ORPD	66 0f 56/r	xmm1,xmm2/mem128
+ORPS	0f 56/r	xmm1,xmm2/mem128
+PACKSSDW	66 0f 6b/r	xmm1,xmm2/mem128
+PACKSSWB	66 0f 63/r	xmm1,xmm2/mem128
+PACKUSWB	66 0f 67/r	xmm1,xmm2/mem128
+PADDB	66 0f fc/r	xmm1,xmm2/mem128
+PADDD	66 0f fe/r	xmm1,xmm2/mem128
+PADDQ	66 0f d4/r	xmm1,xmm2/mem128
+PADDSB	66 0f ec/r	xmm1,xmm2/mem128
+PADDSW	66 0f ed/r	xmm1,xmm2/mem128
+PADDUSB	66 0f dc/r	xmm1,xmm2/mem128
+PADDUSW	66 0f dd/r	xmm1,xmm2/mem128
+PADDW	66 0f fd/r	xmm1,xmm2/mem128
+PAND	66 0f db/r	xmm1,xmm2/mem128
+PANDN	66 0f df/r	xmm1,xmm2/mem128
+PAVGB	66 0f e0/r	xmm1,xmm2/mem128
+PAVGW	66 0f e3/r	xmm1,xmm2/mem128
+PCMPEQB	66 0f 74/r	xmm1,xmm2/mem128
+PCMPEQD	66 0f 76/r	xmm1,xmm2/mem128
+PCMPEQW	66 0f 75/r	xmm1,xmm2/mem128
+PCMPGTB	66 0f 64/r	xmm1,xmm2/mem128
+PCMPGTD	66 0f 66/r	xmm1,xmm2/mem128
+PCMPGTW	66 0f 65/r	xmm1,xmm2/mem128
+PEXTRW	66 0f c5/r ib	reg32,xmm,imm8
+PINSRW	66 0f c4/r ib	xmm,reg32/mem16,imm8
+PMADDWD	66 0f f5/r	xmm1,xmm2/mem128
+PMAXSW	66 0f ee/r	xmm1,xmm2/mem128
+PMAXUB	66 0f de/r	xmm1,xmm2/mem128
+PMINSW	66 0f ea/r	xmm1,xmm2/mem128
+PMINUB	66 0f da/r	xmm1,xmm2/mem128
+PMOVMSKB	66 0f d7/r	reg32,xmm
+PMULHUW	66 0f e4/r	xmm1,xmm2/mem128
+PMULHW	66 0f e5/r	xmm1,xmm2/mem128
+PMULLW	66 0f d5/r	xmm1,xmm2/mem128
+PMULUDQ	66 0f f4/r	xmm1,xmm2/mem128
+POR	66 0f eb/r	xmm1,xmm2/mem128
+PSADBW	66 0f f6/r	x1,x2/m128
+PSHUFD	66 0f 70/r ib	x1,x2/mem128,i8
+PSHUFHW	f3 0f 70/r ib	x1,x2/m128,i8
+PSHUFLW	f2 0f 70/r ib	x1,x2/m128,i8
+PSLLD	66 0f f2/r	x1,x2/m128
+PSLLD	66 0f 72/6 ib	x,imm8
+PSLLDQ	66 0f 73/7 ib	x,i8
+PSLLQ	66 0f f3/r	x1,x2/m128
+PSLLQ	66 0f 73/6 ib	x,i8
+PSLLW	66 0f f1/r	x1,x2/m128
+PSLLW	66 0f 71 /6 ib	x,i8
+PSRAD	66 0f e2/r	x1,x2/m128
+PSRAD	66 0f 72/r ib	x,i8
+PSRAW	66 0f e1/r	x1,x2/m128
+PSRAW	66 0f 71/4 ib	x,i8
+PSRLD	66 0f d2/r	x1,x2/m128
+PSRLD	66 0f 72/2 ib	x,i8
+PSRLDQ	66 0f 73/3 ib	x,i8
+PSRLQ	66 0f d3/r	x1,x2/m128
+PSRLQ	66 0f 73/2 ib	x,i8
+PSRLW	66 0f d1/r	x1,x2/m128
+PSRLW	66 0f 71/2 ib	x,i8
+PSUBB	66 0f f8/r	x1,x2/m128
+PSUBD	66 0f fa/r	x1,x2/m128
+PSUBQ	66 0f fb/r	x1,x2/m128
+PSUBSB	66 0f e8/r	x1,x2/m128
+PSUBSW	66 0f e9/r	x1,x2/m128
+PSUBUSB	66 0f d8/r	x1,x2/m128
+PSUBUSW	66 0f d9/r	x1,x2/m128
+PSUBW	66 0f f9/r	x1,x2/m128
+PUNPCKHBW	66 0f 68/r	x1,x2/m128
+PUNPCKHDQ	66 0f 6a/r	x1,x2/m128
+PUNPCKHQDQ	66 0f 6d/r	x1,x2/mem128
+PUNPCKHWD	66 0f 69/r	x1,x2/m128
+PUNPCKLBW	66 0f 60/r	x1,x2/m128
+PUNPCKLDQ	66 0f 62/r	x1,x2/m128
+PUNPCKLQDQ	66 0f 6c/r	x1,x2/m128
+PUNPCKLWD	66 0f 61/r	x1,x2/m128
+PXOR	66 0f ef/r	x1,x2/m128
+RCPPS	0f 53/r	x1,x2/m128
+RCPSS	f3 0f 53/r	x1,x2/m128
+RSQRTPS	0f 52/r	x1,x2/m128
+RSQRTSS	f3 0f 52/r	x1,x2/m32
+SHUFPD	66 0f c6/r ib	x1,x2/m128,i8
+SHUFPS	0f c6/r ib	x1,x2/m128,i8
+SQRTPD	66 0f 51/r	x1,x2/m128
+SQRTPS	0f 51/r	x1,x2/m128
+SQRTSD	f2 0f 51/r	x1,x2/m64
+SQRTSS	f3 0f 51/r	x1,x2/m32
+STMXCSR	0f a3/e	m32
+SUBPD	66 0f 5c/r	x1,x2/m128
+SUBPS	0f 5c/r	x1,x2/m128
+SUBSD	f2 0f 5c/r	x1,x2/m64
+SUBSS	f3 0f 5c/r	x1,x2/m32
+UCOMISD	66 0f 2e/r	x1,x2/m64
+UCOMISS	0f 2e/r	x1,x2/m32
+UNPCKHPD	66 0f 15/r	x1,x2/m128
+UNPCKHPS	0f 15/r	x1,x2/m128
+UNPCKLPD	66 0f 14/r	x1,x2/m128
+UNPCKLPS	0f 14/r	x1,x2/m128
+XORPD	66 0f 57/r	x1,x2/m128
+XORPS	0f 57/r	x1,x2/m128

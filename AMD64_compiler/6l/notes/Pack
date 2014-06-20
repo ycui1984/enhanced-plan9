@@ -1,0 +1,9 @@
+#!/bin/rc
+rfork n
+ramfs
+mkdir /tmp/empty
+bind /tmp/empty /amd64/bin
+cd /
+bind /tmp/empty /amd64/lib
+bind -c $home/tmp /tmp
+tar c amd64/include/u*.h amd64/mkfile amd64/bin amd64/lib sys/src/libc sys/src/libmach sys/src/cmd/^(6a 6c 6l cc)  | gzip >/tmp/6pack.tgz

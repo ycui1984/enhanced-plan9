@@ -1,0 +1,6 @@
+  14:	0f ae 44 24 00       	fxsave 0x0(%rsp)
+  19:	0f ae 4c 24 00       	fxrstor 0x0(%rsp)
+  1e:	0f ae 54 24 00       	ldmxcsr 0x0(%rsp)
+  23:	0f ae e8             	lfence 
+  26:	0f ae f0             	mfence 
+  29:	0f ae f8             	sfence 
