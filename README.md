@@ -47,3 +47,4 @@ some useful docs for setting up auth+fs+cpu server,
 http://wildflower.diablonet.net/~scaron/p9setup.html
 http://mirror.9grid.fr/mirror.9grid.fr/plan9-cpu-auth-server-howto.html
 and plan9 wiki, of course!
+
