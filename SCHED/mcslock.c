@@ -122,8 +122,9 @@ int get_target_core(int range)
 
 void sched_migrate_task(Proc* proc, int target)
 {
-	proc->mach->machno = target;
-	sched();	
+	procwired(proc, target);
+	while (proc->mach->machno != target)
+		sched();	
 }
 
 void migrate_to_special_cores(void)
