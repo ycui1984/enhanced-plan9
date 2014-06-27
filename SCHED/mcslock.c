@@ -109,9 +109,7 @@ lock(Lock *l)
 
 void inc_lock_intensive_tasks(void) 
 {
-	lock(&special_lock);
-	n_lock_intensive_tasks++;
-	unlock(&special_lock);
+	ainc(&n_lock_intensive_tasks);
 }
 
 int get_target_core(int range)
