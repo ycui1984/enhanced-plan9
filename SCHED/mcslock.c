@@ -128,6 +128,7 @@ void sched_migrate_task(Proc* proc, int target)
 void migrate_to_special_cores(void)
 {
 	int local_core_bound = special_core_bound;
+	print("moving to special cores\n");
 	if (m->proc->is_mig==QUALIFY_TO_MIGRATE || (m->proc->is_mig==HAVE_MIGRATED && m->proc->special_core_bound!=local_core_bound)) {
 		if (m->proc->is_mig == QUALIFY_TO_MIGRATE) {
 			inc_lock_intensive_tasks();

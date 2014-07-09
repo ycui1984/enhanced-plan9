@@ -168,6 +168,7 @@ void determine_new_bound(void)
 						RECORD_LAST_VOTING(n_lock_intensive_tasks,work_cores,thro);
 						CLEAR_VOTING();
 						moving=1;
+						print("larger bound becomes %d\n", special_core_bound);
 					}
 					climbing = 1;
 				} else climbing++;
@@ -180,6 +181,7 @@ void determine_new_bound(void)
 					CLEAR_VOTING();
 					moving = 1;
 					climbing = 0;
+					print("smaller bound becomes %d\n", special_core_bound);
 				} else climbing--;
 			}
 		}
@@ -208,42 +210,46 @@ sched(void)
 			(up && up->lastilock)? lockgetpc(up->lastilock): m->ilockpc,
 			getcallerpc(&p+2));
 
-	m->proc->slice_end = rdtsc();
- 	m->proc->slice_len = m->proc->slice_end - m->proc->slice_begin;
-	if (0 == m->proc->is_mig) {
-		if (m->proc->acc_lock_time > m->proc->slice_len/5) {
-			m->proc->is_mig = QUALIFY_TO_MIGRATE;
-			m->proc->special_core_bound = special_core_bound;
-		}
-	} else {
-		if (m->proc->is_mig==QUALIFY_TO_MIGRATE || m->proc->is_mig==HAVE_MIGRATED) {
-			int can_vote = (m->machno < special_core_bound && m->proc->record_bound == special_core_bound);
-			if (can_vote) {
-				if (canlock(&voting_lock)) {
-					if (m->proc->record_bound == special_core_bound) 
-						VOTE(1, n_lock_intensive_tasks, m->proc->acc_lock_time, m->proc->slice_len);
-					unlock(&voting_lock);
-				}
-				int is_sufficient=voting_slice > special_core_bound*256000;
-				if (is_sufficient && canlock(&voting_lock)) {
-					determine_new_bound();
-					unlock(&voting_lock);
-				}
+	if (0!=m->proc) {
+		m->proc->slice_end = rdtsc();
+ 		m->proc->slice_len = m->proc->slice_end - m->proc->slice_begin;
+	
+		if (0 == m->proc->is_mig) {
+		 	if (m->proc->acc_lock_time > m->proc->slice_len/5) {
+				m->proc->is_mig = QUALIFY_TO_MIGRATE;
+				m->proc->special_core_bound = special_core_bound;
 			}
-		}	
-	}
-
-	if (timer_fires(remig_next) && canlock(&voting_lock)) {
-		if (timer_fires(remig_next)) {
-			special_core_bound = 1;
-			CLEAR_VOTING();
-			climbing = 1;
-			remig_next = rdtsc() + remig_timeout_interval;
+		} else {
+			if (m->proc->is_mig==QUALIFY_TO_MIGRATE || m->proc->is_mig==HAVE_MIGRATED) {
+				int can_vote = (m->machno < special_core_bound && m->proc->record_bound == special_core_bound);
+				if (can_vote) {
+					if (canlock(&voting_lock)) {
+						if (m->proc->record_bound == special_core_bound) 
+							VOTE(1, n_lock_intensive_tasks, m->proc->acc_lock_time, m->proc->slice_len);
+						unlock(&voting_lock);
+					}
+					int is_sufficient=voting_slice > special_core_bound*256000;
+					if (is_sufficient && canlock(&voting_lock)) {
+						determine_new_bound();
+						unlock(&voting_lock);
+					}
+				}
+			}	
 		}
-		unlock(&voting_lock);
-	}
-	m->proc->acc_lock_time = 0;
 
+		if (timer_fires(remig_next) && canlock(&voting_lock)) {
+			if (timer_fires(remig_next)) {
+				special_core_bound = 1;
+				CLEAR_VOTING();
+				climbing = 1;
+				remig_next = rdtsc() + remig_timeout_interval;
+			}
+			unlock(&voting_lock);
+		}
+
+		m->proc->acc_lock_time = 0;
+	}
+	
 	if(up){
 		/*
 		 * Delay the sched until the process gives up the locks
@@ -286,8 +292,10 @@ sched(void)
 	mmuswitch(up);
 	gotolabel(&up->sched);
 
-	m->proc->slice_begin = rdtsc();
-   	m->proc->record_bound = special_core_bound;
+	if (0!=m->proc) {
+		m->proc->slice_begin = rdtsc();
+   		m->proc->record_bound = special_core_bound;
+	}
 }
 
 int
