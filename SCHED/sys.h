@@ -50,4 +50,3 @@
 #define	PWRITE		51
 #define	TSEMACQUIRE	52
 #define SIGLOCK		53
-#define KGETPID		54

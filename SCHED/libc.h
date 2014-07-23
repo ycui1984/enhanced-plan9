@@ -714,7 +714,6 @@ extern	void	rerrstr(char*, uint);
 extern	char*	sysname(void);
 extern	void	werrstr(char*, ...);
 extern 	void 	siglock(ulong, ulong);
-extern 	int 	kgetpid(void);
 
 #pragma	varargck	argpos	werrstr	1
 
