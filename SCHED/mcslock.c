@@ -95,7 +95,7 @@ findle(Lock *l)
 }
 
 int
-lock(Lock *l)
+native_lock(Lock *l)
 {
 	LockEntry *ql;
 
@@ -114,7 +114,7 @@ void inc_lock_intensive_tasks(void)
 
 int get_target_core(int range)
 {
-	u64int random = rdtsc();
+	ulong random = rdtsc();
 	return random % range;
 }
 
@@ -128,7 +128,7 @@ void sched_migrate_task(Proc* proc, int target)
 void migrate_to_special_cores(void)
 {
 	int local_core_bound = special_core_bound;
-	print("moving to special cores\n");
+	
 	if (m->proc->is_mig==QUALIFY_TO_MIGRATE || (m->proc->is_mig==HAVE_MIGRATED && m->proc->special_core_bound!=local_core_bound)) {
 		if (m->proc->is_mig == QUALIFY_TO_MIGRATE) {
 			inc_lock_intensive_tasks();
@@ -144,12 +144,18 @@ void migrate_to_special_cores(void)
 }
 
 int
-lock_wrapper(Lock *l)
+lock(Lock *l)
 {
-	migrate_to_special_cores();
-	u64int start = rdtsc();
-	int ret = lock(l);
-	m->proc->lock_time = rdtsc() - start;
+	int ret;
+	ulong start;
+
+	if (0!=m->proc) {
+		migrate_to_special_cores();
+		start = rdtsc();
+		ret = native_lock(l);
+		m->proc->acc_lock_time = rdtsc() - start;
+	} else ret = native_lock(l);
+	
 	return ret;	
 }
 

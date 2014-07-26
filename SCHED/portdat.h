@@ -782,7 +782,7 @@ struct Proc
 	ulong	lastupdate;
 	ulong	readytime;	/* time process came ready */
 	ulong	movetime;	/* last time process switched processors */
-	ulong  	lock_time;	/* total lock time in the current slice */
+
 	int 	is_mig;		/* migration status */
 	int 	special_core_bound; /*special core bound of this process*/
 	ulong 	slice_end;
@@ -790,6 +790,7 @@ struct Proc
 	ulong	slice_len;
 	ulong 	acc_lock_time;
 	int	record_bound;
+
 	int	preempted;	/* true if this process hasn't finished the interrupt
 				 *  that last preempted it
 				 */

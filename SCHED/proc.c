@@ -216,10 +216,12 @@ sched(void)
 	
 		if (0 == m->proc->is_mig) {
 		 	if (m->proc->acc_lock_time > m->proc->slice_len/5) {
+				print("find a qualified task\n");
 				m->proc->is_mig = QUALIFY_TO_MIGRATE;
 				m->proc->special_core_bound = special_core_bound;
 			}
 		} else {
+			print("may vote\n");
 			if (m->proc->is_mig==QUALIFY_TO_MIGRATE || m->proc->is_mig==HAVE_MIGRATED) {
 				int can_vote = (m->machno < special_core_bound && m->proc->record_bound == special_core_bound);
 				if (can_vote) {
@@ -249,7 +251,7 @@ sched(void)
 
 		m->proc->acc_lock_time = 0;
 	}
-	
+
 	if(up){
 		/*
 		 * Delay the sched until the process gives up the locks
