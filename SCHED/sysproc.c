@@ -1192,7 +1192,7 @@ syssiglock(Ar0* ar0, va_list list) {
 	ulong ncs_cycles = va_arg(list, ulong);
 
 	loop(ncs_cycles);	
-	lock_wrapper(&SINGLE_LOCK);
+	lock(&SINGLE_LOCK);
 	loop(cs_cycles);
 	unlock(&SINGLE_LOCK);
 }
