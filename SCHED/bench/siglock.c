@@ -4,7 +4,6 @@
 ulong slaves = 2;
 long cnt = 0;
 int thecount = 5;
-int numCPU = 8;
 
 static void ready_detect(void) {
 	ainc(&cnt);
@@ -15,8 +14,10 @@ static void bench(int id) {
 	int cnt;
 
 	ready_detect();
-	for (cnt = 1; cnt <=thecount; cnt++) 
-		siglock(1, 2);
+	for (cnt = 1; cnt <=thecount; cnt++) {
+		/* siglock(1, 2); */
+		sysr1(0, 0);
+	}
 }
 
 static void create_slave(void) {

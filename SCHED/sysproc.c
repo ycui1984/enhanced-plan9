@@ -10,12 +10,29 @@
 #include	<a.out.h>
 #include	<ptrace.h>
 
+Lock SINGLE_LOCK;
+
+void
+loop(ulong len)
+{
+	ulong s = rdtsc();
+	while (rdtsc() - s < len);
+}
+
 void
 sysr1(Ar0* ar0, va_list list)
 {
 	USED(list);
 
 	ar0->i = 0;
+
+	ulong cs_cycles = va_arg(list, ulong);
+	ulong ncs_cycles = va_arg(list, ulong);
+
+	loop(ncs_cycles);
+	lock(&SINGLE_LOCK);
+	loop(cs_cycles);
+	unlock(&SINGLE_LOCK);
 }
 
 void
@@ -1175,15 +1192,6 @@ syssemrelease(Ar0* ar0, va_list list)
 		error(Ebadarg);
 
 	ar0->i = semrelease(s, addr, delta);
-}
-
-Lock SINGLE_LOCK;
-
-void 
-loop(ulong len)
-{
-	ulong s = rdtsc();
-	while (rdtsc() - s < len);
 }
 
 void
