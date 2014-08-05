@@ -48,7 +48,7 @@ int climbing = 1;
 int thro_last_step;
 int work_cores_last_step;
 int num_tasks_last_step;
-int max_special_cores = 32;
+int max_special_cores = 2;
 int n_lock_intensive_tasks = 0;
 extern int special_core_bound;
 
@@ -216,12 +216,10 @@ sched(void)
 	
 		if (0 == m->proc->is_mig) {
 		 	if (m->proc->acc_lock_time > m->proc->slice_len/5) {
-				print("find a qualified task\n");
 				m->proc->is_mig = QUALIFY_TO_MIGRATE;
 				m->proc->special_core_bound = special_core_bound;
 			}
 		} else {
-			print("may vote\n");
 			if (m->proc->is_mig==QUALIFY_TO_MIGRATE || m->proc->is_mig==HAVE_MIGRATED) {
 				int can_vote = (m->machno < special_core_bound && m->proc->record_bound == special_core_bound);
 				if (can_vote) {
