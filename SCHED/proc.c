@@ -143,6 +143,7 @@ schedinit(void)		/* never returns */
 		coherence();
 		up = nil;
 	}
+	max_special_cores = sys->nmach;
 	sched();
 }
 
