@@ -1,0 +1,133 @@
+
+------system design report------
+
+This project enables the lock contention aware scheduler in the 
+amd64 Plan9 kernel. The original implementation in Linux is 
+described here http://dl.acm.org/citation.cfm?id=2400703. The 
+kernel that we enable lock contention aware scheduler is not the
+official kernel published online, it is an amd64 kernel designed 
+by Charles Forsyth. This kernel uses MCS locks as the basic 
+synchronization primitives. For setting up the kernel, please look
+at README.md. We modify files to enable the scheduler, test the 
+scheduler, etc. The modifications will be introduced one by one.
+
+in mcslock.c:
+
+there is a function called lock(Lock*l) implements the mcs lock, 
+I changed this function to be native_lock(Lock*) and did not modify 
+the function body, as it will be called in my lock wrapper function.
+
+int
+lock(Lock *l) {
+	int ret;
+	ulong start;
+	if (0!=m->proc) {
+		migrate_to_special_cores();
+		start = rdtsc();
+		ret = native_lock(l);
+		m->proc->acc_lock_time = rdtsc() - start;
+	} else ret = native_lock(l);
+	return ret;	
+}
+Fig.1 The lock wrapper. 
+
+the lock(Lock*l) function currently becomes my lock wrapper, so that 
+each invocation into this function will trigger the lock contention
+aware scheduler. Basically, in the function body, I will see whether
+the Mach has a current process running on it, if there is not, I will
+call native_lock directly, otherwise, I will see whether the current
+process is lock intensive enough so that I need to move to special 
+core set. This is finished by calling migrate_to_special_cores() 
+function. Then, the time used to call a mcs lock is recored by timing
+before and after the native_lock() function. I add a field called 
+acc_lock_time to represent the total lock waiting time of a process
+in the scheduled time slice. 
+
+void migrate_to_special_cores(void)
+{
+	int local_core_bound = special_core_bound;
+	if (m->proc->is_mig==QUALIFY_TO_MIGRATE || (m->proc->is_mig==HAVE_MIGRATED && m->proc->special_core_bound!=local_core_bound)) {
+		if (m->proc->is_mig == QUALIFY_TO_MIGRATE) {
+			inc_lock_intensive_tasks();
+			m->proc->is_mig=HAVE_MIGRATED;
+		}
+		int target_core = get_target_core(local_core_bound);
+		if (m->machno!=target_core) {
+			sched_migrate_task(m->proc, target_core);
+		}
+		m->proc->special_core_bound = local_core_bound;
+	}
+}  
+Fig2. migrate function.
+
+The migrate function will look at the process status, and may change the 
+status accordingly. If it finds a core that should be migrated, it calls
+the sched_migrate_task function to migrate task. The details of low level
+migration and inc_lock_intensive_tasks can be found in this file. 
+
+in portdat.h
+
+Several fields of a process are added in this file, 
+such as is_mig indicating the migration status of the process, special_core_
+bound indicating the special core bound of the process, slice_end indicating
+the end time stamp of a process, slice_begin indicating the start time stamp 
+of a process, slice_len indicating the length of a time slice, acc_lock_time
+indicating the lock waiting time. 
+
+in proc.c
+we enhance the sched() function in proc.c to add the capability of lock 
+contention aware scheduler. At the start of the time slice, which is the bottom
+of sched() function, we record the start time of the time slice and record_bound, 
+if the current process exists.
+
+At the end of the time slice, which is at the begin part of sched() function, 
+we record slice_end time stamp and calculate the slice_len.
+Then we look at the migration status of the process, if it is zero (m->proc->is_mig),
+then it is a process which has not been considered as lock intensive before, 
+we will look at whether it is qualified to be a lock intensive task. The 
+metric is the lock waiting time percentage. If it is larger than 20%, the current
+process is QUALIFY_TO_MIGRATE, and we record the special core bound.
+
+However, if the current process has some migration status which is not zero, 
+it may vote to select the updated number of cores running the lock intensive 
+task. The vote qualification is tested by judging the core that the process is
+running on, if it belongs to the special core bound, and the record_bound variable
+have not changed, it can vote. As the voting variables are global, we use a lock 
+voting_lock to protect it. The interfaces of vote systems are included in the top
+part of this file. If it holds the vote lock successfully, it can calls the 
+determine_new_bound() function to calculate the core bound. 
+
+In the function determine_new_bound(), it uses a algorithm like hill climbing to 
+find the core with maximal performance. Also to reduce the error at runtime,  we
+move the bound when the new calculated bound is the same  at least twice. The 
+algorithm will find the optimal number of cores running the lock intensive tasks, 
+then stablize there. There are two mechanisms that can trigger re-migration. 
+First, we have a timer, when the timer times out, we clear the voting variables and
+restart the migration process. Second, when the system throughput changes significantly
+we also restart the migration process. 
+
+in libc.h, sys.h, sysproc.h and systab.h
+these four files are used for testing the kernel we created.
+Basically, I add a system call in the kernel called syssiglock, 
+this system call stress the locking in the kernel. As shown in Fig.3, we can specify
+the time in non-critical section and the time in critical section. 
+
+void
+syssiglock(Ar0* ar0, va_list list) {
+	ulong cs_cycles = va_arg(list, ulong);
+	ulong ncs_cycles = va_arg(list, ulong);
+	loop(ncs_cycles);	
+	lock(&SINGLE_LOCK);
+	loop(cs_cycles);
+	unlock(&SINGLE_LOCK);
+}
+Fig.3 testing syscall 
+
+bench
+there is a directory called bench. We create a user program to issue the syscall in
+parallel. However, there is a problem to use this system call. That is we need to modify
+files such as libc.h, this is inconvenient for running the amd64 bit kernel in QEMU. 
+Thanks to a null system call sysr1, which does nothing in the kernel, we modify the syscall
+to implement the same function of syssiglock. In this way, we do not need to modify libc 
+things. 
+
