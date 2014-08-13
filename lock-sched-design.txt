@@ -132,3 +132,7 @@ Thanks to a null system call sysr1, which does nothing in the kernel, we modify 
 to implement the same function of syssiglock. In this way, we do not need to modify libc 
 things. 
 
+results
+Currently, the amd64 kernel can boot into the new kernel, and works correctly. 
+However, it needs to be tested on real system with multiple cores before finial release as
+this patch works when lock contention is an issue.
