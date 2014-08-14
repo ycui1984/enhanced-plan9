@@ -124,7 +124,7 @@ syssiglock(Ar0* ar0, va_list list) {
 }
 Fig.3 testing syscall 
 
-bench
+in bench
 there is a directory called bench. We create a user program to issue the syscall in
 parallel. However, there is a problem to use this system call as we need to modify
 files such as libc.h, which is inconvenient for running the amd64 bit kernel in QEMU. 
@@ -132,7 +132,7 @@ Thanks to a null system call sysr1, which does nothing in the kernel, we modify 
 syscall to implement the same function of syssiglock. In this way, we do not need t
 o modify libc things. 
 
-results
+RESULTS
 Currently, the amd64 kernel can boot into the new kernel, and works correctly. 
 However, it needs to be further tested on real system with multiple cores before 
 finial release as this patch works well when lock contention is an issue.
