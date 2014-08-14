@@ -8,7 +8,7 @@ kernel that we enable lock contention aware scheduler is not the
 official kernel published online, it is an amd64 kernel designed 
 by Charles Forsyth. This kernel uses MCS locks as the basic 
 synchronization primitives. For setting up the kernel, please look
-at README.md. We modify files to enable the scheduler, test the 
+at README.txt. We modify files to enable the scheduler, test the 
 scheduler, etc. The modifications will be introduced one by one.
 
 in mcslock.c:
@@ -68,12 +68,12 @@ migration and inc_lock_intensive_tasks can be found in this file.
 
 in portdat.h
 
-Several fields of a process are added in this file, 
-such as is_mig indicating the migration status of the process, special_core_
-bound indicating the special core bound of the process, slice_end indicating
-the end time stamp of a process, slice_begin indicating the start time stamp 
-of a process, slice_len indicating the length of a time slice, acc_lock_time
-indicating the lock waiting time. 
+Several fields of a process are added in this file.
+is_mig indicates the migration status of the process, special_core_
+bound indicates the special core bound of the process, slice_end indicates
+the end time stamp of a process, slice_begin indicates the start time stamp 
+of a process, slice_len indicates the length of a time slice, acc_lock_time
+indicates the lock waiting time. 
 
 in proc.c
 we enhance the sched() function in proc.c to add the capability of lock 
@@ -95,7 +95,7 @@ task. The vote qualification is tested by judging the core that the process is
 running on, if it belongs to the special core bound, and the record_bound variable
 have not changed, it can vote. As the voting variables are global, we use a lock 
 voting_lock to protect it. The interfaces of vote systems are included in the top
-part of this file. If it holds the vote lock successfully, it can calls the 
+part of proc.c. If it holds the vote lock successfully, it can calls the 
 determine_new_bound() function to calculate the core bound. 
 
 In the function determine_new_bound(), it uses a algorithm like hill climbing to 
@@ -108,10 +108,10 @@ restart the migration process. Second, when the system throughput changes signif
 we also restart the migration process. 
 
 in libc.h, sys.h, sysproc.h and systab.h
-these four files are used for testing the kernel we created.
-Basically, I add a system call in the kernel called syssiglock, 
-this system call stress the locking in the kernel. As shown in Fig.3, we can specify
-the time in non-critical section and the time in critical section. 
+these four files are used for testing the kernel we created. Basically, I add a 
+system call in the kernel called syssiglock, this system call stress the locking 
+in the kernel. As shown in Fig.3, we can specify the time in non-critical section 
+and the time in critical section. 
 
 void
 syssiglock(Ar0* ar0, va_list list) {
@@ -126,13 +126,14 @@ Fig.3 testing syscall
 
 bench
 there is a directory called bench. We create a user program to issue the syscall in
-parallel. However, there is a problem to use this system call. That is we need to modify
-files such as libc.h, this is inconvenient for running the amd64 bit kernel in QEMU. 
-Thanks to a null system call sysr1, which does nothing in the kernel, we modify the syscall
-to implement the same function of syssiglock. In this way, we do not need to modify libc 
-things. 
+parallel. However, there is a problem to use this system call as we need to modify
+files such as libc.h, which is inconvenient for running the amd64 bit kernel in QEMU. 
+Thanks to a null system call sysr1, which does nothing in the kernel, we modify the 
+syscall to implement the same function of syssiglock. In this way, we do not need t
+o modify libc things. 
 
 results
 Currently, the amd64 kernel can boot into the new kernel, and works correctly. 
-However, it needs to be tested on real system with multiple cores before finial release as
-this patch works when lock contention is an issue.
+However, it needs to be further tested on real system with multiple cores before 
+finial release as this patch works well when lock contention is an issue.
+
