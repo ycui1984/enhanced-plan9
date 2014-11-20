@@ -1,75 +1,66 @@
-TEXT ainc(SB), $0	/* long ainc(long *); */
-	MOVL	addr+0(FP), BX
+TEXT ainc(SB), 1, $0	/* long ainc(long *); */
 ainclp:
-	MOVL	(BX), AX
-	MOVL	AX, CX
-	INCL	CX
-	LOCK
-	BYTE	$0x0F; BYTE $0xB1; BYTE $0x0B	/* CMPXCHGL CX, (BX) */
+	MOVL	(RARG), AX	/* exp */
+	MOVL	AX, BX
+	INCL	BX		/* new */
+	LOCK; CMPXCHGL BX, (RARG)
 	JNZ	ainclp
-	MOVL	CX, AX
+	MOVL	BX, AX
 	RET
 
-TEXT adec(SB), $0	/* long adec(long*); */
-	MOVL	addr+0(FP), BX
+TEXT adec(SB), 1, $0	/* long adec(long*); */
 adeclp:
-	MOVL	(BX), AX
-	MOVL	AX, CX
-	DECL	CX
-	LOCK
-	BYTE	$0x0F; BYTE $0xB1; BYTE $0x0B	/* CMPXCHGL CX, (BX) */
+	MOVL	(RARG), AX
+	MOVL	AX, BX
+	DECL	BX
+	LOCK; CMPXCHGL BX, (RARG)
 	JNZ	adeclp
-	MOVL	CX, AX
+	MOVL	BX, AX
 	RET
 
 /*
  * int cas32(u32int *p, u32int ov, u32int nv);
  * int cas(uint *p, int ov, int nv);
- * int casp(void **p, void *ov, void *nv);
- * int casl(ulong *p, ulong ov, ulong nv);
+ * int casul(ulong *p, ulong ov, ulong nv);
  */
 
-/*
- * CMPXCHG (CX), DX: 0000 1111 1011 000w oorr rmmm,
- * mmm = CX = 001; rrr = DX = 010
- */
-
-#define CMPXCHG		BYTE $0x0F; BYTE $0xB1; BYTE $0x11
-
-TEXT	cas32+0(SB),0,$0
-TEXT	cas+0(SB),0,$0
-TEXT	casp+0(SB),0,$0
-TEXT	casl+0(SB),0,$0
-	MOVL	p+0(FP), CX
-	MOVL	ov+4(FP), AX
-	MOVL	nv+8(FP), DX
-	LOCK
-	CMPXCHG
-	JNE	fail
-	MOVL	$1,AX
+TEXT cas32(SB), 1, $0
+TEXT cas(SB), 1, $0
+TEXT casul(SB), 1, $0
+TEXT casl(SB), 1, $0			/* back compat */
+	MOVL	exp+8(FP), AX
+	MOVL	new+16(FP), BX
+	LOCK; CMPXCHGL BX, (RARG)
+	MOVL	$1, AX				/* use CMOVLEQ etc. here? */
+	JNZ	_cas32r0
+_cas32r1:
 	RET
-fail:
-	MOVL	$0,AX
+_cas32r0:
+	DECL	AX
 	RET
 
 /*
  * int cas64(u64int *p, u64int ov, u64int nv);
+ * int casp(void **p, void *ov, void *nv);
  */
+
+TEXT cas64(SB), 1, $0
+TEXT casp(SB), 1, $0
+	MOVQ	exp+8(FP), AX
+	MOVQ	new+16(FP), BX
+	LOCK; CMPXCHGQ BX, (RARG)
+	MOVL	$1, AX				/* use CMOVLEQ etc. here? */
+	JNZ	_cas64r0
+_cas64r1:
+	RET
+_cas64r0:
+	DECL	AX
+	RET
 
 /*
- * CMPXCHG64 (DI): 0000 1111 1100 0111 0000 1110,
+ * void mfence(void);
  */
-
-#define CMPXCHG64		BYTE $0x0F; BYTE $0xC7; BYTE $0x0F
-
-TEXT	cas64+0(SB),0,$0
-	MOVL	p+0(FP), DI
-	MOVL	ov+0x4(FP), AX
-	MOVL	ov+0x8(FP), DX
-	MOVL	nv+0xc(FP), BX
-	MOVL	nv+0x10(FP), CX
-	LOCK
-	CMPXCHG64
-	JNE	fail
-	MOVL	$1,AX
+TEXT mfence(SB),0,$0
+	MFENCE
 	RET
+
